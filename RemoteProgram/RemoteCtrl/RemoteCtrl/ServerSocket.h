@@ -102,4 +102,4 @@ private:
 	static CHelper m_helper;
 };
 
-extern CServerSocket server;
+//extern CServerSocket server;
