@@ -4,6 +4,7 @@
 #include "pch.h"
 #include "framework.h"
 #include "RemoteCtrl.h"
+#include "ServerSocket.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -33,8 +34,29 @@ int main()
         }
         else
         {
-            // TODO: code your application's behavior here.
-        }
+            // TODO: code your application's behavior here. socket, bind, listen, accept, read, write, close
+            CServerSocket* pserver = CServerSocket::getInstace();
+            int count = 0;
+            while (CServerSocket::getInstace() !=NULL)
+            {
+                if (pserver->InitSocket() == false) {
+                    MessageBox(NULL, _T("Initial network error!"), _T("Check networking setting"), MB_OK | MB_ICONERROR);
+                }
+                if (pserver->acceptClient() == false) {
+                    if (count>=3)
+                    {
+                        MessageBox(NULL, _T("try to accept network 3 times"), _T("end program"), MB_OK | MB_ICONERROR);
+                    }
+                    MessageBox(NULL, _T("accept network error!"), _T(" Check accept setting"), MB_OK | MB_ICONERROR);
+                    count++;
+                }
+                int ret = pserver->dealCommand();
+
+            }
+
+
+            
+         }
     }
     else
     {

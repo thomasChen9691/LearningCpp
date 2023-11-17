@@ -31,3 +31,6 @@
 *.out
 *.app
 /RemoteProgram/RemoteCtrl/.vs/RemoteCtrl/v16
+/RemoteProgram/RemoteCtrl/Debug
+/RemoteProgram/RemoteCtrl/RemoteClient/Debug
+/RemoteProgram/RemoteCtrl/RemoteCtrl/Debug
