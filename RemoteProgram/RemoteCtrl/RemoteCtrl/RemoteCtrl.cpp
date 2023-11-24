@@ -5,17 +5,57 @@
 #include "framework.h"
 #include "RemoteCtrl.h"
 #include "ServerSocket.h"
-
+#include <direct.h>
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
 
+/*
+#pragma comment( linker, "/subsystem:windows /entry:WinMainCRTStartup")
+#pragma comment( linker, "/subsystem:windows /entry:mainCRTStartup")
+#pragma comment( linker, "/subsystem:console /entry:mainCRTStartup")
+#pragma comment( linker, "/subsystem:console /entry:WinMainCRTStartup")
+*/
 
 // The one and only application object
 
 CWinApp theApp;
 
 using namespace std;
+void Dump(BYTE* pData, size_t nSize) {
+    string strOut;
+    for (size_t i = 0; i < nSize; i++)
+    {
+        char buf[8] = "";
+        if (i >0&& (i%16==0))
+        {
+            strOut += "\n";
+        }
+        snprintf(buf, sizeof(buf), "%02X", pData[i] & 0xFF);
+        strOut += buf;
+    }
+    strOut += "\n";
+    OutputDebugStringA(strOut.c_str());
+}
+
+int MakeDriverInfo() {//1==>A 2==>B
+    string result;
+    for (int i = 1; i <= 26; i++)
+    {
+        if (_chdrive(i) == 0) {//==0 change success, change different driver
+            if (result.size()>0)
+            {
+                result += ',';
+            }
+            result += 'A' + i - 1; //get one drive 
+        }
+    }
+    CPacket pack(1, (BYTE*)result.c_str(), result.size());
+    Dump((BYTE*)pack.Data(), pack.Size());
+
+    //CServerSocket::getInstace()->Send(pack);
+    return 0;
+}
 
 int main()
 {
@@ -53,7 +93,15 @@ int main()
                 int ret = pserver->dealCommand();
 
             }
-
+            int nCmd = 1;
+            switch (nCmd)
+            {
+            case 1://check driver
+                MakeDriverInfo();
+                break;
+            default:
+                break;
+            }
 
             
          }
