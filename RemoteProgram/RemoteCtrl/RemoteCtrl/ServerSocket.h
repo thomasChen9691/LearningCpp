@@ -150,8 +150,6 @@ public:
 		m_client = accept(m_sock, (sockaddr*)&client_adr, &cli_sz);
 		if (m_client == -1) return false;
 		return true;
-		//
-		//
 		
 	}
 #define BUFFER_SIZE 4096
