@@ -102,8 +102,6 @@ int main()
             default:
                 break;
             }
-
-            
          }
     }
     else
